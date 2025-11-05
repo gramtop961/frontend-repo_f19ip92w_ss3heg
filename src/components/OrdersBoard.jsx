@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, Clock, Trash2, Utensils } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Currency = ({ value }) => (
   <span>{value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</span>
@@ -29,7 +30,7 @@ const OrdersBoard = ({ orders, onAdvance, onDelete }) => {
   };
 
   const Column = ({ title, status, children }) => (
-    <div className="bg-white border border-gray-200 rounded-xl p-4">
+    <div className="bg-white/80 backdrop-blur border border-gray-200 rounded-2xl p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-semibold">{title}</h3>
         <StatusBadge status={status} />
@@ -40,11 +41,16 @@ const OrdersBoard = ({ orders, onAdvance, onDelete }) => {
     </div>
   );
 
-  const OrderCard = ({ order }) => (
-    <div className="border border-gray-200 rounded-lg p-3">
+  const OrderCard = ({ order, idx }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, delay: idx * 0.03 }}
+      className="border border-gray-200 rounded-xl p-3 bg-white shadow-xs"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-md bg-gray-900 text-white grid place-items-center">
+          <div className="w-9 h-9 rounded-md bg-gray-900 text-white grid place-items-center shadow">
             <Utensils className="w-4 h-4" />
           </div>
           <div>
@@ -89,7 +95,7 @@ const OrdersBoard = ({ orders, onAdvance, onDelete }) => {
           Eliminar
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
@@ -98,24 +104,24 @@ const OrdersBoard = ({ orders, onAdvance, onDelete }) => {
         {grouped.pendiente.length === 0 && (
           <p className="text-sm text-gray-500">Sin pedidos pendientes.</p>
         )}
-        {grouped.pendiente.map((o) => (
-          <OrderCard key={o.id} order={o} />
+        {grouped.pendiente.map((o, i) => (
+          <OrderCard key={o.id} order={o} idx={i} />
         ))}
       </Column>
       <Column title="En preparación" status="preparando">
         {grouped.preparando.length === 0 && (
           <p className="text-sm text-gray-500">Nada en preparación.</p>
         )}
-        {grouped.preparando.map((o) => (
-          <OrderCard key={o.id} order={o} />
+        {grouped.preparando.map((o, i) => (
+          <OrderCard key={o.id} order={o} idx={i} />
         ))}
       </Column>
       <Column title="Listos" status="listo">
         {grouped.listo.length === 0 && (
           <p className="text-sm text-gray-500">Aún no hay pedidos listos.</p>
         )}
-        {grouped.listo.map((o) => (
-          <OrderCard key={o.id} order={o} />
+        {grouped.listo.map((o, i) => (
+          <OrderCard key={o.id} order={o} idx={i} />
         ))}
       </Column>
     </div>

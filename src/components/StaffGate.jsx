@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LockKeyhole, KeyRound } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const StaffGate = ({ onUnlock }) => {
   const [code, setCode] = useState('');
@@ -16,9 +17,14 @@ const StaffGate = ({ onUnlock }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="max-w-md mx-auto bg-white/80 backdrop-blur border border-gray-200 rounded-2xl p-6 shadow-sm"
+    >
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-gray-900 text-white grid place-items-center">
+        <div className="w-10 h-10 rounded-lg bg-gray-900 text-white grid place-items-center shadow">
           <LockKeyhole className="w-5 h-5" />
         </div>
         <div>
@@ -47,7 +53,7 @@ const StaffGate = ({ onUnlock }) => {
           Desbloquear
         </button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
